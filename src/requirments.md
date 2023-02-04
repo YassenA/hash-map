@@ -1,5 +1,5 @@
-## Requirments of `unorderedMap<x, y>`
-#### Capacity
+# Requirments of `unorderedMap<x, y>`
+### Capacity
 - `empty `
 	- Checks whether the container is empty
 	- Syntax: `exampleMap.empty()` 
@@ -12,7 +12,7 @@
 	- Returns the maximum possible number of elements
 	- Syntax: `exampleMap.maxSize()`
 	- Output: Returns an integer `>= 0`
-####  Modifiers
+###  Modifiers
 - `clear`
 	- Clears the contents of the map
 	- Syntax: `exampleMap.clear()`
@@ -31,7 +31,7 @@
 - `merge`
 	- Splices nodes from another container
 	- Syntax: `exampleMap.clear()`
-#### Lookup
+### Lookup
 - `at`
 	- Access specified element with bounds checking
 	- Syntax: `exampleMap.at(4)`
@@ -51,7 +51,7 @@
 - `contains`
 	- Checks if the container contains element with specific key
 	- Syntax: `exampleMap.contains(x)`
-#### Bucket interface 
+### Bucket interface 
 - `bucketCount`
 	- Returns the number of buckets  
 - `maxBucketSize`
@@ -61,8 +61,8 @@
 - `bucket`
 	- Returns the bucket for specific key
 
-#### Comparison
-- operator== 
+### Comparison
+- operator`==` 
 	- Compares the keys and values in the map
 	- Syntax: `exampleMapOne<x, y> == exampleMapTwo<x, y>`
 	- Output: Returns boolean of comparing the respective values
