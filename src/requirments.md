@@ -1,0 +1,71 @@
+## Requirments of `unorderedMap<x, y>`
+#### Capacity
+- `empty `
+	- Checks whether the container is empty
+	- Syntax: `exampleMap.empty()` 
+	- Output: Returns `true` or `false`
+- `size` 
+	- Returns the number of elements
+	- Syntax: `exampleMap.size()`
+	- Output: Returns an integer `>= 0`
+- `maxSize`
+	- Returns the maximum possible number of elements
+	- Syntax: `exampleMap.maxSize()`
+	- Output: Returns an integer `>= 0`
+####  Modifiers
+- `clear`
+	- Clears the contents of the map
+	- Syntax: `exampleMap.clear()`
+- `insert`
+	- Inserts elements or nodes
+	- Syntax: `exampleMap.insert(x, y)`
+- `emplace`
+	- Constructs element in-place
+	- Syntax: `exampleMap.clear()`
+- `erase`
+	- Erases elements
+	- Syntax: `exampleMap.clear()`
+- `swap`
+	- Swaps the contents
+	- Syntax: `exampleMap.clear()`
+- `merge`
+	- Splices nodes from another container
+	- Syntax: `exampleMap.clear()`
+#### Lookup
+- `at`
+	- Access specified element with bounds checking
+	- Syntax: `exampleMap.at(4)`
+	- Output: Return value of specified key, `y`
+- operator`[]`
+	- Access or insert specified element
+	- Syntax: `exampleMap[x]`
+	- Output: Return value of specified key, `y`
+- `count` 
+	- Returns the number of elements matching specific key
+	- Syntax: `exampleMap.count()`
+	- Output: Return an integer `>= 0`  of elements matching specified key, `y` 
+- `find` 
+	- Finds element with specific key
+	- Syntax: `exampleMap.find(x)` or `exampleMap.find(x, y)`
+	- Output: Return boolean if specified key is found
+- `contains`
+	- Checks if the container contains element with specific key
+	- Syntax: `exampleMap.contains(x)`
+#### Bucket interface 
+- `bucketCount`
+	- Returns the number of buckets  
+- `maxBucketSize`
+	- Returns the maximum number of buckets
+- `bucketSize`
+	- Returns the number of elements in specific bucket
+- `bucket`
+	- Returns the bucket for specific key
+
+#### Comparison
+- operator== 
+	- Compares the keys and values in the map
+	- Syntax: `exampleMapOne<x, y> == exampleMapTwo<x, y>`
+	- Output: Returns boolean of comparing the respective values
+- `eraseIf`
+	- Erases all elements satisfying specific criteria
+	- Syntax: `exampleMap.eraseIf(x, y)`
