@@ -9,7 +9,7 @@
 	- Syntax: `exampleMap.size()`
 	- Output: Returns an integer `>= 0`
 - `maxSize`
-	- Returns the maximum possible number of elements
+	- Returns the maximum possible number of elements that can be stored
 	- Syntax: `exampleMap.maxSize()`
 	- Output: Returns an integer `>= 0`
 ###  Modifiers
@@ -21,16 +21,16 @@
 	- Syntax: `exampleMap.insert(x, y)`
 - `emplace`
 	- Constructs element in-place
-	- Syntax: `exampleMap.clear()`
+	- Syntax: `exampleMap.emplace(x, y)`
 - `erase`
-	- Erases elements
-	- Syntax: `exampleMap.clear()`
+	- Erases keys of the map
+	- Syntax: `exampleMap.erase()`
 - `swap`
-	- Swaps the contents
-	- Syntax: `exampleMap.clear()`
+	- Swaps the contents of a key and value
+	- Syntax: `exampleMap.swap(x, y, w, z)`
 - `merge`
 	- Splices nodes from another container
-	- Syntax: `exampleMap.clear()`
+	- Syntax: `merge(exampleMap1, exampleMap2)`
 ### Lookup
 - `at`
 	- Access specified element with bounds checking
@@ -53,13 +53,17 @@
 	- Syntax: `exampleMap.contains(x)`
 ### Bucket interface 
 - `bucketCount`
-	- Returns the number of buckets  
+	- Syntax: `exampleMap.bucketCount()`
+	- Output: Returns the number of buckets  
 - `maxBucketSize`
-	- Returns the maximum number of buckets
+	- Syntax: `exampleMap.maxBucketSize()`
+	- Output: Returns the maximum number of buckets
 - `bucketSize`
-	- Returns the number of elements in specific bucket
+	- Syntax: `exampleMap.bucketSize(x, y)`
+	- Output: Returns the number of elements in specific bucket
 - `bucket`
-	- Returns the bucket for specific key
+	- Syntax: `exampleMap.bucket(x ,y)`
+	- Output: Returns the bucket for specific key
 
 ### Comparison
 - operator`==` 
