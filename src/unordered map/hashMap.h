@@ -1,3 +1,13 @@
 #pragma once
 
-class Hash {};
+#include <algorithm>
+
+namespace Container {
+	template<typename T, class Container = T>
+	class Hash {
+	private:
+		Container container{};
+
+	public:
+	};
+}
