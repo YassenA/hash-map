@@ -14,7 +14,9 @@ namespace container {
 
 			std::vector<std::list<std::pair<const Key, Type>>> m_table; 
 		public:
-			using valueType = std::pair<const Key, mapped_type>;
+			using mappedType = Type;
+			using valueType = std::pair<const Key, mappedType>;
+
 		
 			// Default constructor
 			constexpr HashTable(const hasher& hash = Hash())
