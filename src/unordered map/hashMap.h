@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <list>
 #include <vector>
 
 namespace container {
@@ -8,9 +9,10 @@ namespace container {
 	class HashTable {
 		private:
 			using hashTable = std::vector<std::list<std::pair<const Key, Type>>>;
-		
 			std::size_t m_size{};		
-			Hash m_hash								  
+			Hash m_hash		
+			int m_bucket_count{};
+
 
 			std::vector<std::list<std::pair<const Key, Type>>> m_table; 
 		public:
