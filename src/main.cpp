@@ -1,9 +1,9 @@
 #include <iostream>
-//#include "unordered-map/hashMap.h"
+#include "unordered-map/hashMap.h"
 
 int main() {
 
-    std::cout << "Test" << std::endl;
-
+    //container::HashTable<int, std::string> testHash;
+    
     return 0;
 }

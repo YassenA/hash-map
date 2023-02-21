@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <list>
 #include <vector>
+#include <initializer_list>
 
 namespace container {
 	template<typename Key, typename Type, typename Hash = std::hash<Key>>
@@ -9,30 +10,35 @@ namespace container {
 	class HashTable {
 		private:
 			using hashTable = std::vector<std::list<std::pair<const Key, Type>>>;
-			std::size_t m_size{};		
-			Hash m_hash		
-			int m_bucket_count{};
+			
+			int mSize{}; // Size of the elements that have been inserted
+			Hash mHash; // Keeps track of the consutrcted hash 
+			int mBucketCount{};
 
-
-			std::vector<std::list<std::pair<const Key, Type>>> m_table; 
+			std::vector<std::list<std::pair<const Key, Type>>> mTable; // Where the hash table is tored
 		public:
 			using mappedType = Type;
 			using valueType = std::pair<const Key, mappedType>;
 
+			// List initialisation consuctrion
+			//constexpr int HashTable(std::initializer_list<valueType> hashList, const hasher& hash = Hash())
+			//	: mSize {hashList.size()},
+			//	  mHash {hash}
+			//{}
 		
 			// Default constructor
-			constexpr HashTable(const hasher& hash = Hash())
-				: m_size{ 0 }
-				, m_hash{ hash }
-				, m_bucket_count{ 0 }
+			//constexpr HashTable(const Hash hash = Hash())
+			//	: mSize{ 0 }
+			//	, mSize{ hash }
+			//	, mBucketCount{ 0 }
 
-			{}
+			//{}
 		
 			// Initialisation constructor
 			constexpr HashTable(const HashTable& other)
-				, m_hash{ other.m_hash }
-				, m_size{ other.m_size }
-				, m_table{ other.m_table }
+				: mSize{ other.mSize }
+				, mSize{ other.mSize }
+				, mTable{ other.mTable }
 			{}
 
 			// Swap constructor, itialise object
@@ -62,6 +68,13 @@ namespace container {
 				temp.swap(*this);
 				return *this;
 			}
+
+
+
+
+
+			constexpr bool empty() const { return (mSize == 0); }
+			constexpr int  size()  const { return mSize;        }
 
 
 	};
