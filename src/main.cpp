@@ -3,7 +3,7 @@
 
 int main() {
 
-    //container::HashTable<int, std::string> testHash;
+    container::HashTable<int, std::string> testHash;
     
     return 0;
 }

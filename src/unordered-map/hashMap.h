@@ -12,7 +12,7 @@ namespace container {
 			using hashTable = std::vector<std::list<std::pair<const Key, Type>>>;
 			
 			int mSize{}; // Size of the elements that have been inserted
-			Hash mHash; // Keeps track of the consutrcted hash 
+			Hash mHash;  // Keeps track of the consutrcted hash 
 			int mBucketCount{};
 
 			std::vector<std::list<std::pair<const Key, Type>>> mTable; // Where the hash table is tored
@@ -20,28 +20,28 @@ namespace container {
 			using mappedType = Type;
 			using valueType = std::pair<const Key, mappedType>;
 
-			// List initialisation consuctrion
-			//constexpr int HashTable(std::initializer_list<valueType> hashList, const hasher& hash = Hash())
-			//	: mSize {hashList.size()},
-			//	  mHash {hash}
-			//{}
+			// List initialisation constructor
+			constexpr HashTable(std::initializer_list<valueType> hashList, const Hash& hash = Hash())
+				: mSize {hashList.size()},
+				  mHash {hash}
+			{}
 		
 			// Default constructor
-			//constexpr HashTable(const Hash hash = Hash())
-			//	: mSize{ 0 }
-			//	, mSize{ hash }
-			//	, mBucketCount{ 0 }
+			constexpr HashTable(const Hash& hash = Hash())
+				: mSize{ 0 }
+				, mHash{ hash }
+				, mBucketCount{ 0 }
 
-			//{}
+			{}
 		
 			// Initialisation constructor
-			constexpr HashTable(const HashTable& other)
-				: mSize{ other.mSize }
-				, mSize{ other.mSize }
-				, mTable{ other.mTable }
+			constexpr HashTable(const HashTable& otherTable)
+				: mSize{ otherTable.mSize }
+				, mSize{ otherTable.mSize }
+				, mTable{ otherTable.mTable }
 			{}
 
-			// Swap constructor, itialise object
+			// Swap constructor, initialise object
 			constexpr HashTable(HashTable&& other) noexcept
 				: HashTable() {
 				other.swap(*this);
@@ -68,8 +68,6 @@ namespace container {
 				temp.swap(*this);
 				return *this;
 			}
-
-
 
 
 
