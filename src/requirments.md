@@ -5,7 +5,7 @@
 	- Syntax: `exampleMap.empty()` 
 	- Output: Returns `true` or `false`
 - `size` 
-	- Returns the number of elements
+	- Returns the number of key, value pairs
 	- Syntax: `exampleMap.size()`
 	- Output: Returns an integer `>= 0`
 - `maxSize`
@@ -70,6 +70,8 @@
 	- Compares the keys and values in the map
 	- Syntax: `exampleMapOne<x, y> == exampleMapTwo<x, y>`
 	- Output: Returns boolean of comparing the respective values
+- operator`==`
+	- As of C++20, operator`!=` implicitly exists inveresely to the equals to operator
 - `eraseIf`
 	- Erases all elements satisfying specific criteria
 	- Syntax: `exampleMap.eraseIf(x, y)`
