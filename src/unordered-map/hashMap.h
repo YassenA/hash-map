@@ -4,7 +4,7 @@
 #include <vector>
 #include <initializer_list>
 
-namespace container {
+namespace uom {
 	template<typename Key, typename Type, typename Hash = std::hash<Key>>
 	
 	class HashTable {
