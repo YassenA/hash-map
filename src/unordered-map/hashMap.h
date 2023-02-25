@@ -4,16 +4,17 @@
 #include <vector>
 #include <initializer_list>
 
-namespace uom {
+namespace UnorderedMap {
 	template<typename Key, typename Type, typename Hash = std::hash<Key>>
 	
 	class HashTable {
 	private:
 		using hashTable = std::vector<std::list<std::pair<const Key, Type>>>;
+		using uInt = std::size_t;
 
-		int mSize{}; // Size of the elements that have been inserted
+		uInt mSize{}; // Size of the elements that have been inserted
 		Hash mHash;  // Keeps track of the consutrcted hash 
-		int mBucketCount{};
+		uInt mBucketCount{};
 
 		std::vector<std::list<std::pair<const Key, Type>>> mTable; // Where the hash table is tored
 	public:
@@ -74,7 +75,6 @@ namespace uom {
 		constexpr bool insert(valueType&& value) {}
 		constexpr bool insert(const valueType& value) {}
 
-
 		constexpr void clear() noexcept {
 			mTable.clear();
 			mSize = 0;
@@ -86,16 +86,52 @@ namespace uom {
 
 
 		// Lookup functions
-		constexpr Type at() const {}
+		constexpr Type& at(const Key& key) const {
+			uInt index{mHash(key) & mBucketCount};
+			auto& currentList{mTable.at(index)};
+			for (auto& element : currentList) {
+				if (element.first == key) {
+					return element.second;
+					//return 34;
+				}
+			}
+		}
+		constexpr Type& at(const Key& key) {
+			uInt index{ mHash(key) & mBucketCount };
+			auto& currentList{ mTable.at(index) };
+			for (auto& element : currentList) {
+				if (element.first == key) {
+					return element.second;
+				}
+			}
+		}
+
 		constexpr Type contains() {}
 		constexpr Type find() {}
 		constexpr Type count() {}
 		constexpr bool empty() const { return (mSize == 0); }
 		constexpr int  size()  const { return mSize; }
+		//constexpr void printTable(const HashTable& hashTable) {
+		//	for (auto content : hashTable.mTable) {
+		//		std::cout << hashTable.at
+		//	}
+		//}
 
-		constexpr Type operator[](const Key& key){}
-
-		// Comparison functions - operator!= is the implicitly an inverse of the operator== as of C++20
+		constexpr const Type& operator[](const Key& key) const {
+			uInt index{ mHash(key) & mBucketCount };
+			auto& currentList{ mTable.at(index) };
+			for (auto& element : currentList) {
+				if (element.first == key) {
+					return element.second;
+					//return 34;
+				}
+			}
+			return currentList.front().second;
+		}
+		//std::ostream& operator<<(std::ostream& os, const HashTable& hash){}
+		
+		
+		// Comparison functions - the operator!= is implicitly an inverse of the operator== as of C++20
 		constexpr bool operator==(const Key& key) {}
 		//void eraseIf()
 	};
