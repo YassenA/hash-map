@@ -53,22 +53,22 @@ namespace UnorderedMap {
 		{}
 
 		// Swap constructor 
-		constexpr HashTable(HashTable&& other) noexcept
+		constexpr HashTable(HashTable&& otherTable) noexcept
 			: HashTable() {
-			other.swap(*this);
+			otherTable.swap(*this);
 		}
 
 		// Swap constructor, overloading assingment operator 
-		constexpr HashTable& operator=(HashTable&& other) noexcept {
+		constexpr HashTable& operator=(HashTable&& otherTable) noexcept {
 			HashTable temp;
-			other.swap(*this);
-			temp.swap(other);
+			otherTable.swap(*this);
+			temp.swap(otherTable);
 			return *this;
 		}
 
 		// Swap keys and values between two maps constructor	
-		constexpr HashTable& operator=(const HashTable& other) {
-			HashTable temp(other);
+		constexpr HashTable& operator=(const HashTable& otherTable) {
+			HashTable temp(otherTable);
 			temp.swap(*this);
 			return *this;
 		}
@@ -150,7 +150,7 @@ namespace UnorderedMap {
 		//}
 
 		//constexpr Type& operator[](const Key& key){
-		//	uInt index{ mHash(key) & mBucketCount };
+		//	uInt index{ mHash(key) % mBucketCount };
 		//	auto& currentList{ mTable.at(index) };
 		//	for (auto& element : currentList) {
 		//		if (element.first == key) {
@@ -161,7 +161,7 @@ namespace UnorderedMap {
 		//	return currentList.front().second;
 		//}
 		constexpr const Type& operator[](const Key& key) const {
-			uInt index{ mHash(key) & mBucketCount };
+			uInt index{ mHash(key) % mBucketCount };
 			auto& currentList{ mTable.at(index) };
 			for (auto& element : currentList) {
 				if (element.first == key) {
@@ -204,7 +204,24 @@ namespace UnorderedMap {
 		}
 
 		constexpr double calculateLoadBalance() const noexcept { return static_cast<double>(mSize / mBucketCount); }
-		
+		//constexpr double maxLoadFactor() const noexcept { return maxLoadFactor; }
+		//constexpr double maxLoadFactor(double newLoadFactorVal) { return maxLoadFactor = newLoadFactorVal; }
+		constexpr void reserve(uInt reservationAmount) {
+			mBucketCount = reservationAmount;
+			reHash(reservationAmount);
+		}
+
+		// Bucket
+		constexpr uInt bucket(const Key& key) const {
+			const uInt index{ mHash(key) % mBucketCount };
+			return index;
+		}
+		constexpr uInt bucketSize(uInt index) const noexcept {
+			return mTable.at(index).size();
+		}
+		constexpr uInt maxBucketCount() const noexcept {
+			return mTable.max_size();
+		}
 	};
 }
 

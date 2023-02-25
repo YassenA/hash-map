@@ -7,11 +7,15 @@ int main() {
     //std::cout << testHash["test"] << std::endl;
     //testHash["test"];
     //container::HashTable<std::string, int> testHash = { {"test", 54} };
-    std::cout << testHash.size() << std::endl;
-    testHash.insert({ "voodo", 234 });
-    std::cout << testHash.size() << std::endl;
-    testHash.clear();
-    std::cout << testHash.size() << std::endl;
+    std::cout << testHash.maxBucketCount() << std::endl;
+    std::cout << testHash["test"] << std::endl;
+    testHash.reserve(1000000);
+    std::cout << testHash.maxBucketCount() << std::endl;
+
+    //testHash.insert({ "voodo", 234 });
+    //std::cout << testHash.size() << std::endl;
+    //testHash.clear();
+    //std::cout << testHash.size() << std::endl;
     //std::cout << testHash["test"] << std::endl;
     return 0;
 }
