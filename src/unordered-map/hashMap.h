@@ -13,8 +13,12 @@ namespace UnorderedMap {
 		using uInt = std::size_t;
 
 		uInt mSize{}; // Size of the elements that have been inserted
-		Hash mHash;  // Keeps track of the consutrcted hash 
+		Hash mHash;   // Keeps track of the consutrcted hash 
 		uInt mBucketCount{};
+		
+		inline static const double growthFactor = 2.0;
+		inline static const double maxLoadFactor = 0.75;
+
 
 		std::vector<std::list<std::pair<const Key, Type>>> mTable; // Where the hash table is tored
 	public:
@@ -24,8 +28,14 @@ namespace UnorderedMap {
 		// List initialisation constructor
 		constexpr HashTable(std::initializer_list<valueType> hashList, const Hash& hash = Hash())
 			: mSize{ hashList.size() },
-			mHash{ hash }
-		{}
+			  mHash{ hash },
+			  mBucketCount{static_cast<uInt>(hashList.size() * growthFactor)},
+			  mTable(static_cast<uInt>(hashList.size() * growthFactor))
+		{
+			for (auto elementPair : hashList) {
+				insert(elementPair);
+			}
+		}
 
 		// Default constructor, empty initilisation 
 		constexpr HashTable(const Hash& hash = Hash())
@@ -71,9 +81,31 @@ namespace UnorderedMap {
 		}
 
 		// Modifiers
-		constexpr bool insert(std::initializer_list<valueType> hashList) {}
-		constexpr bool insert(valueType&& value) {}
-		constexpr bool insert(const valueType& value) {}
+		constexpr void insert(std::initializer_list<valueType> hashList) {
+			for (auto elementPair : hashList) {
+				insert(elementPair);
+			}
+		}
+		//template<typename T>
+		constexpr bool insert(valueType&& value) {
+			uInt index{ mHash(value.first) % mBucketCount };
+			auto& currentBucket{ mTable.at(index) };
+			currentBucket.push_front(value);
+			mSize++;
+
+			if (calculateLoadBalance() > maxLoadFactor) { reHash(); }
+			return true;
+		}
+		constexpr bool insert(const valueType& value) {
+			uInt index{ mHash(value.first) % mBucketCount };
+			auto& currentBucket{ mTable.at(index) };
+			currentBucket.push_front(value);
+			mSize++;
+
+			if (calculateLoadBalance() > maxLoadFactor) { reHash(); }
+			return true;
+		}
+
 
 		constexpr void clear() noexcept {
 			mTable.clear();
@@ -85,19 +117,19 @@ namespace UnorderedMap {
 		//constexpr merge 
 
 
+
 		// Lookup functions
-		constexpr Type& at(const Key& key) const {
-			uInt index{mHash(key) & mBucketCount};
+		constexpr const Type& at(const Key& key) const {
+			uInt index{mHash(key) % mBucketCount};
 			auto& currentList{mTable.at(index)};
 			for (auto& element : currentList) {
 				if (element.first == key) {
 					return element.second;
-					//return 34;
 				}
 			}
 		}
 		constexpr Type& at(const Key& key) {
-			uInt index{ mHash(key) & mBucketCount };
+			uInt index{ mHash(key) % mBucketCount };
 			auto& currentList{ mTable.at(index) };
 			for (auto& element : currentList) {
 				if (element.first == key) {
@@ -108,7 +140,7 @@ namespace UnorderedMap {
 
 		constexpr Type contains() {}
 		constexpr Type find() {}
-		constexpr Type count() {}
+		constexpr Type& count() {}
 		constexpr bool empty() const { return (mSize == 0); }
 		constexpr int  size()  const { return mSize; }
 		//constexpr void printTable(const HashTable& hashTable) {
@@ -117,6 +149,17 @@ namespace UnorderedMap {
 		//	}
 		//}
 
+		//constexpr Type& operator[](const Key& key){
+		//	uInt index{ mHash(key) & mBucketCount };
+		//	auto& currentList{ mTable.at(index) };
+		//	for (auto& element : currentList) {
+		//		if (element.first == key) {
+		//			return element.second;
+		//			//return 34;
+		//		}
+		//	}
+		//	return currentList.front().second;
+		//}
 		constexpr const Type& operator[](const Key& key) const {
 			uInt index{ mHash(key) & mBucketCount };
 			auto& currentList{ mTable.at(index) };
@@ -133,7 +176,35 @@ namespace UnorderedMap {
 		
 		// Comparison functions - the operator!= is implicitly an inverse of the operator== as of C++20
 		constexpr bool operator==(const Key& key) {}
-		//void eraseIf()
+		//constexpr void eraseIf()
+
+		constexpr void reHash() {
+			hashTable tempHash{ mTable };
+			mTable.clear();
+			mSize = 0;
+			mBucketCount = static_cast<uInt>(mBucketCount * growthFactor);
+			mTable.resize(mBucketCount);
+			for (const auto& currentBucket : tempHash) {
+				for (const auto& currentPair : currentBucket) {
+					insert(currentPair);
+				}
+			}
+		}
+		constexpr void reHash(uInt bucketAmount) {
+			hashTable tempHash{ mTable };
+			mTable.clear();
+			mSize = 0;
+			mBucketCount = bucketAmount;
+			mTable.resize(mBucketCount);
+			for (const auto& currentBucket : tempHash) {
+				for (const auto& currentPair : currentBucket) {
+					insert(currentPair);
+				}
+			}
+		}
+
+		constexpr double calculateLoadBalance() const noexcept { return static_cast<double>(mSize / mBucketCount); }
+		
 	};
 }
 
