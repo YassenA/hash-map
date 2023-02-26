@@ -4,6 +4,7 @@
 #include <vector>
 #include <initializer_list>
 
+#include <ranges>
 #include <iomanip>
 #include <iostream>
 #include <iomanip>
@@ -28,6 +29,7 @@ namespace UnorderedMap {
 	public:
 		using mappedType = Type;
 		using valueType = std::pair<const Key, mappedType>;
+		friend std::ostream& operator<<(std::ostream& os, const HashTable& hashTableOS);
 
 		// List initialisation constructor
 		constexpr HashTable(std::initializer_list<valueType> hashList, const Hash& hash = Hash())
@@ -164,39 +166,48 @@ namespace UnorderedMap {
 		constexpr const Type& at(const Key& key) const {
 			uInt index{mHash(key) % mBucketCount};
 			auto& currentList{mTable.at(index)};
-			for (auto& element : currentList) {
+			for (const auto& element : currentList) {
 				if (element.first == key) {
 					return element.second;
 				}
 			}
-		}
-		constexpr Type& at(const Key& key) {
-			uInt index{ mHash(key) % mBucketCount };
-			auto& currentList{ mTable.at(index) };
-			for (auto& element : currentList) {
-				if (element.first == key) {
-					return element.second;
-				}
-			}
+			throw std::out_of_range("Given key is not associated with any element");
 		}
 
-		constexpr void printTable() {
+		constexpr void printTable() const {
 			for (auto const& elementPair : mTable) {
 				for (auto const& element : elementPair) {
 					std::cout << "Key: " << element.first << " Value: " << element.second << "\n";
 				}
 			}
 		}
-		constexpr Type contains() {}
-		constexpr Type find() {}
-		constexpr Type& count() {}
+		constexpr bool containsKey(const Key& key) const {
+			for (auto const& elementPair : mTable) {
+				for (auto const& element : elementPair) {
+					if (element.first == key) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		constexpr bool containsValue(const Type& value) const {
+			for (auto const& elementPair : mTable) {
+				for (auto const& element : elementPair) {
+					if (element.second == value) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		template <typename T>
+		constexpr bool find(const T& input) {
+			
+		}
+		constexpr uInt count() {}
 		constexpr bool empty() const { return (mSize == 0); }
-		constexpr int  size()  const { return mSize; }
-		//constexpr void printTable(const HashTable& hashTable) {
-		//	for (auto content : hashTable.mTable) {
-		//		std::cout << hashTable.at
-		//	}
-		//}
+		constexpr uInt  size()  const { return mSize; }
 
 		constexpr const Type& operator[](const Key& key) const {
 			uInt index{ mHash(key) % mBucketCount };
@@ -209,11 +220,36 @@ namespace UnorderedMap {
 			}
 			return currentList.front().second;
 		}
-		//std::ostream& operator<<(std::ostream& os, const HashTable& hash){}
 		
+		//for (auto& [a, b] : zip(containerA, containerB)) {
+		//	a = b;
+		//}
 		
 		// Comparison functions - the operator!= is implicitly an inverse of the operator== as of C++20
-		constexpr bool operator==(const Key& key) {}
+		constexpr bool operator==(const HashTable& otherTable) {
+			if (this->size() != otherTable.size()) { return false; }
+
+			//for (auto const& elementPair : this->mTable) {
+			//	for (auto const& element : elementPair) {
+			//		if (element.)
+			//	}
+			//}
+			//for (auto const& elementPair : this->mTable) {
+			//	for (auto const& element : elementPair) {
+			//		if (element.)
+			//	}
+			//}
+			for (const auto& thisTableElement : this->mTable) {
+				//for (auto const& [thisElement, otherElement] : [thisTableElement, otherTableElement] ) {
+				//	std::cout << thisElement.first << std::endl;
+				//}
+				std::cout << "Something" << std::endl;
+			}
+
+			//return false;
+
+			return true;
+		}
 		//constexpr void eraseIf()
 
 		constexpr void reHash() {
@@ -258,5 +294,9 @@ namespace UnorderedMap {
 		constexpr uInt maxBucketCount() const noexcept		 { return mTable.max_size(); }
 		constexpr const hashTable getTable() const noexcept  { return mTable; }
 	};
+
+	std::ostream& operator<<(std::ostream& os, const hashTableOS & hashTableOS) {
+		return os;
+	}
 }
 
