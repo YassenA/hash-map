@@ -4,6 +4,11 @@
 #include <vector>
 #include <initializer_list>
 
+#include <iomanip>
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <array>
 namespace UnorderedMap {
 	template<typename Key, typename Type, typename Hash = std::hash<Key>>
 	
@@ -17,10 +22,9 @@ namespace UnorderedMap {
 		uInt mBucketCount{};
 		
 		inline static const double growthFactor = 2.0;
-		inline static const double maxLoadFactor = 0.75;
+		inline static const double mMaxLoadFactor = 0.75;
 
-
-		std::vector<std::list<std::pair<const Key, Type>>> mTable; // Where the hash table is tored
+		hashTable mTable; // Where the hash table is stored
 	public:
 		using mappedType = Type;
 		using valueType = std::pair<const Key, mappedType>;
@@ -47,9 +51,10 @@ namespace UnorderedMap {
 
 		// Copy constructor
 		constexpr HashTable(const HashTable& otherTable)
-			: mSize{ otherTable.mSize }
+			: mBucketCount{ otherTable.mBucketCount }
 			, mSize{ otherTable.mSize }
 			, mTable{ otherTable.mTable }
+			, mHash{ otherTable.mHash }
 		{}
 
 		// Swap constructor 
@@ -86,14 +91,13 @@ namespace UnorderedMap {
 				insert(elementPair);
 			}
 		}
-		//template<typename T>
 		constexpr bool insert(valueType&& value) {
 			uInt index{ mHash(value.first) % mBucketCount };
 			auto& currentBucket{ mTable.at(index) };
 			currentBucket.push_front(value);
 			mSize++;
 
-			if (calculateLoadBalance() > maxLoadFactor) { reHash(); }
+			if (calculateLoadBalance() > mMaxLoadFactor) { reHash(); }
 			return true;
 		}
 		constexpr bool insert(const valueType& value) {
@@ -102,9 +106,22 @@ namespace UnorderedMap {
 			currentBucket.push_front(value);
 			mSize++;
 
-			if (calculateLoadBalance() > maxLoadFactor) { reHash(); }
+			if (calculateLoadBalance() > mMaxLoadFactor) { reHash(); }
 			return true;
 		}
+		//constexpr void insert(HashTable tableToInsert) {
+		//	for (auto const& elementPair : tableToInsert) {
+		//		//insert(elementPair);
+		//		for (auto const& element : elementPair) {
+		//			insert(element);
+		//		}
+		//	}
+
+		//	std::cout << (this->size() + tableToInsert.size()) << std::endl;
+		//	std::cout <<"calculateLoadBalance: " << (this->calculateLoadBalance()) << " and size: " << this->size() << 
+		//		" Bucket: " << this->maxBucketCount() << 
+		//		std::endl;
+		//}
 
 
 		constexpr void clear() noexcept {
@@ -113,7 +130,32 @@ namespace UnorderedMap {
 			mBucketCount = 0;
 		}
 		constexpr bool emplace() {}
-		constexpr bool remove() {}
+		constexpr bool removeByKey(const Key& key) {
+			uInt index{ mHash(key) % mBucketCount };
+			auto& currentList{ mTable.at(index) };
+			for (const auto& elementPair : currentList) {
+				if (elementPair.first == key) {
+					currentList.remove(elementPair);
+					mSize--;
+					return true;
+				}
+			}
+			return false;
+		}
+		constexpr bool removeByValue(const Type& value) {
+			uInt index{ 0 };
+			for (auto& element : mTable) {
+				for (const auto& elementPair : element) {
+					if (elementPair.second == value) {
+						mTable.at(index).remove(elementPair);
+						mSize--;
+						return true;
+					}
+				}
+				index++;
+			}
+			return false;
+		}
 		//constexpr merge 
 
 
@@ -138,6 +180,13 @@ namespace UnorderedMap {
 			}
 		}
 
+		constexpr void printTable() {
+			for (auto const& elementPair : mTable) {
+				for (auto const& element : elementPair) {
+					std::cout << "Key: " << element.first << " Value: " << element.second << "\n";
+				}
+			}
+		}
 		constexpr Type contains() {}
 		constexpr Type find() {}
 		constexpr Type& count() {}
@@ -149,17 +198,6 @@ namespace UnorderedMap {
 		//	}
 		//}
 
-		//constexpr Type& operator[](const Key& key){
-		//	uInt index{ mHash(key) % mBucketCount };
-		//	auto& currentList{ mTable.at(index) };
-		//	for (auto& element : currentList) {
-		//		if (element.first == key) {
-		//			return element.second;
-		//			//return 34;
-		//		}
-		//	}
-		//	return currentList.front().second;
-		//}
 		constexpr const Type& operator[](const Key& key) const {
 			uInt index{ mHash(key) % mBucketCount };
 			auto& currentList{ mTable.at(index) };
@@ -204,24 +242,21 @@ namespace UnorderedMap {
 		}
 
 		constexpr double calculateLoadBalance() const noexcept { return static_cast<double>(mSize / mBucketCount); }
-		//constexpr double maxLoadFactor() const noexcept { return maxLoadFactor; }
-		//constexpr double maxLoadFactor(double newLoadFactorVal) { return maxLoadFactor = newLoadFactorVal; }
+		constexpr double maxLoadFactor() const noexcept        { return mMaxLoadFactor; }
+		constexpr double maxLoadFactor(double newLoadFactorVal){ return mMaxLoadFactor = newLoadFactorVal; }
 		constexpr void reserve(uInt reservationAmount) {
 			mBucketCount = reservationAmount;
 			reHash(reservationAmount);
 		}
 
-		// Bucket
+		// Bucket interface
 		constexpr uInt bucket(const Key& key) const {
 			const uInt index{ mHash(key) % mBucketCount };
 			return index;
 		}
-		constexpr uInt bucketSize(uInt index) const noexcept {
-			return mTable.at(index).size();
-		}
-		constexpr uInt maxBucketCount() const noexcept {
-			return mTable.max_size();
-		}
+		constexpr uInt bucketSize(uInt index) const noexcept { return mTable.at(index).size(); }
+		constexpr uInt maxBucketCount() const noexcept		 { return mTable.max_size(); }
+		constexpr const hashTable getTable() const noexcept  { return mTable; }
 	};
 }
 
