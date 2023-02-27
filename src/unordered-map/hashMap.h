@@ -21,7 +21,7 @@ namespace UnorderedMap {
 		uInt mSize{}; // Size of the elements that have been inserted
 		Hash mHash;   // Keeps track of the consutrcted hash 
 		uInt mBucketCount{};
-		
+
 		inline static const double growthFactor = 2.0;
 		inline static const double mMaxLoadFactor = 0.75;
 
@@ -29,14 +29,15 @@ namespace UnorderedMap {
 	public:
 		using mappedType = Type;
 		using valueType = std::pair<const Key, mappedType>;
-		friend std::ostream& operator<<(std::ostream& os, const HashTable& hashTableOS);
+		template <typename K, typename V>
+		friend std::ostream& operator<<(std::ostream& os, const HashTable<K, V>& hashTableOS);
 
 		// List initialisation constructor
 		constexpr HashTable(std::initializer_list<valueType> hashList, const Hash& hash = Hash())
 			: mSize{ hashList.size() },
-			  mHash{ hash },
-			  mBucketCount{static_cast<uInt>(hashList.size() * growthFactor)},
-			  mTable(static_cast<uInt>(hashList.size() * growthFactor))
+			mHash{ hash },
+			mBucketCount{ static_cast<uInt>(hashList.size() * growthFactor) },
+			mTable(static_cast<uInt>(hashList.size()* growthFactor))
 		{
 			for (auto elementPair : hashList) {
 				insert(elementPair);
@@ -111,18 +112,22 @@ namespace UnorderedMap {
 			if (calculateLoadBalance() > mMaxLoadFactor) { reHash(); }
 			return true;
 		}
-		//constexpr void insert(HashTable tableToInsert) {
-		//	for (auto const& elementPair : tableToInsert) {
-		//		//insert(elementPair);
-		//		for (auto const& element : elementPair) {
-		//			insert(element);
-		//		}
-		//	}
+		template <typename K, typename V>
+		constexpr void insert(const HashTable<K, V>& tableToInsert) {
+			for (auto& elementPair : tableToInsert.getTable()) {
+				for (auto& element : elementPair) {
+					insert(element);
+				}
+			}
+		}
+		constexpr hashTable insert(HashTable otherTable) {
+			for (const auto& elements : otherTable.mTable) {
+				this->mTable.push_back(elements);
+			}
+			return this->mTable;
+		}
+		//constexpr Hash insert(Hash value) {
 
-		//	std::cout << (this->size() + tableToInsert.size()) << std::endl;
-		//	std::cout <<"calculateLoadBalance: " << (this->calculateLoadBalance()) << " and size: " << this->size() << 
-		//		" Bucket: " << this->maxBucketCount() << 
-		//		std::endl;
 		//}
 
 
@@ -158,8 +163,31 @@ namespace UnorderedMap {
 			}
 			return false;
 		}
-		//constexpr merge 
+		constexpr void eraseIf(valueType&& inputPair) {
+			if (this->containsKey(inputPair.first) && this->at(inputPair.first) == inputPair.second) {
+				for (auto& elements : this->mTable) {
+					for (auto& elementPair : elements) {
+						if (elementPair.first == inputPair.first
+							&& elementPair.second == inputPair.second) {
+							this->removeByKey(inputPair.first);
+							break;
+						}
+					}
+				}
+			}
+		}
 
+		template <typename K, typename V>
+		HashTable& operator+(HashTable<K, V> rightObject) {
+			this->mSize = this->size() + rightObject.size();
+			this->mTable = this->insert(rightObject);
+			this->reHash();
+			return *this;
+
+		}
+		constexpr void merge(HashTable leftObject, HashTable rightObject){
+			*this = (leftObject + rightObject) + *this;
+		}
 
 
 		// Lookup functions
@@ -171,9 +199,8 @@ namespace UnorderedMap {
 					return element.second;
 				}
 			}
-			throw std::out_of_range("Given key is not associated with any element");
+			throw std::out_of_range("Error - Given key is not associated with any element");
 		}
-
 		constexpr void printTable() const {
 			for (auto const& elementPair : mTable) {
 				for (auto const& element : elementPair) {
@@ -201,12 +228,31 @@ namespace UnorderedMap {
 			}
 			return false;
 		}
-		template <typename T>
-		constexpr bool find(const T& input) {
+		constexpr void printContents() {
+			std::cout << "==Size==\n" << this->size() << "\n==Content==" << "\n";
 			
+			this->printTable();
+			
+			std::cout << "==Bucket==\nBucket Count: " << this->mBucketCount << "\nMax Bucket Count: " << this->maxBucketCount()
+			          << "\n==Load Factor==\nLoad Blance: " << std::setprecision(8) << this->calculateLoadBalance() << "\nMax Load Factor: " << this->maxLoadFactor() << "\n";
 		}
-		constexpr uInt count() {}
-		constexpr bool empty() const { return (mSize == 0); }
+		//template <typename T>
+		//constexpr bool find(const T& input) {
+		//	
+		//}
+		constexpr uInt count(valueType&& value) const {
+			uInt counter = 0;
+			if (this->containsKey(value.first)) {
+				for (const auto& elements : this->mTable) {
+					for (const auto& elementPair : elements) {
+						if (elementPair.first == value.first 
+					     && elementPair.second == value.second) { counter++; }
+					}
+				}
+			}
+			return counter;
+		}
+		constexpr bool empty()  const { return (mSize == 0); }
 		constexpr uInt  size()  const { return mSize; }
 
 		constexpr const Type& operator[](const Key& key) const {
@@ -215,42 +261,16 @@ namespace UnorderedMap {
 			for (auto& element : currentList) {
 				if (element.first == key) {
 					return element.second;
-					//return 34;
 				}
 			}
 			return currentList.front().second;
 		}
 		
-		//for (auto& [a, b] : zip(containerA, containerB)) {
-		//	a = b;
-		//}
-		
 		// Comparison functions - the operator!= is implicitly an inverse of the operator== as of C++20
 		constexpr bool operator==(const HashTable& otherTable) {
-			if (this->size() != otherTable.size()) { return false; }
-
-			//for (auto const& elementPair : this->mTable) {
-			//	for (auto const& element : elementPair) {
-			//		if (element.)
-			//	}
-			//}
-			//for (auto const& elementPair : this->mTable) {
-			//	for (auto const& element : elementPair) {
-			//		if (element.)
-			//	}
-			//}
-			for (const auto& thisTableElement : this->mTable) {
-				//for (auto const& [thisElement, otherElement] : [thisTableElement, otherTableElement] ) {
-				//	std::cout << thisElement.first << std::endl;
-				//}
-				std::cout << "Something" << std::endl;
-			}
-
-			//return false;
-
+			if (this->size() != otherTable.size() || this->mTable != otherTable.mTable) { return false; }
 			return true;
 		}
-		//constexpr void eraseIf()
 
 		constexpr void reHash() {
 			hashTable tempHash{ mTable };
@@ -276,13 +296,18 @@ namespace UnorderedMap {
 				}
 			}
 		}
-
 		constexpr double calculateLoadBalance() const noexcept { return static_cast<double>(mSize / mBucketCount); }
 		constexpr double maxLoadFactor() const noexcept        { return mMaxLoadFactor; }
 		constexpr double maxLoadFactor(double newLoadFactorVal){ return mMaxLoadFactor = newLoadFactorVal; }
 		constexpr void reserve(uInt reservationAmount) {
 			mBucketCount = reservationAmount;
 			reHash(reservationAmount);
+		}
+		constexpr void swap(HashTable& otherTable) {
+			std::swap(mSize, otherTable.mSize);
+			std::swap(mTable, otherTable.mTable);
+			std::swap(mHash, otherTable.mHash);
+			std::swap(mBucketCount, otherTable.mBucketCount);
 		}
 
 		// Bucket interface
@@ -294,8 +319,10 @@ namespace UnorderedMap {
 		constexpr uInt maxBucketCount() const noexcept		 { return mTable.max_size(); }
 		constexpr const hashTable getTable() const noexcept  { return mTable; }
 	};
-
-	std::ostream& operator<<(std::ostream& os, const hashTableOS & hashTableOS) {
+	
+	template<typename K, typename V>
+	std::ostream& operator<<(std::ostream& os, const HashTable<K, V>& hashTableOS) {
+		hashTableOS.printTable();
 		return os;
 	}
 }
