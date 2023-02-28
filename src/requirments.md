@@ -1,6 +1,6 @@
 # Requirments of `unorderedMap<x, y>`
 ### Capacity
-- `empty `
+- `empty`
 	- Checks whether the container is empty
 	- Syntax: `exampleMap.empty()` 
 	- Output: Returns `true` or `false`
@@ -24,7 +24,7 @@
 	- Syntax: `exampleMap.emplace(x, y)`
 - `erase`
 	- Erases keys of the map
-	- Syntax: `exampleMap.erase()`
+	- Syntax: `exampleMap.erase({x, y})`
 - `swap`
 	- Swaps the contents of a key and value
 	- Syntax: `exampleMap.swap(x, y, w, z)`
@@ -33,24 +33,17 @@
 	- Syntax: `merge(exampleMap1, exampleMap2)`
 ### Lookup
 - `at`
-	- Access specified element with bounds checking
-	- Syntax: `exampleMap.at(4)`
+	- Access specified value with a specified key
+	- Syntax: `exampleMap.at(x)`
 	- Output: Return value of specified key, `y`
 - operator`[]`
-	- Access or insert specified element
+	- Access specified element
 	- Syntax: `exampleMap[x]`
 	- Output: Return value of specified key, `y`
 - `count` 
 	- Returns the number of elements matching specific key
 	- Syntax: `exampleMap.count()`
 	- Output: Return an integer `>= 0`  of elements matching specified key, `y` 
-- `find` 
-	- Finds element with specific key
-	- Syntax: `exampleMap.find(x)` or `exampleMap.find(x, y)`
-	- Output: Return boolean if specified key is found
-- `contains`
-	- Checks if the container contains element with specific key
-	- Syntax: `exampleMap.contains(x)`
 ### Bucket interface 
 - `bucketCount`
 	- Syntax: `exampleMap.bucketCount()`
@@ -58,20 +51,13 @@
 - `maxBucketSize`
 	- Syntax: `exampleMap.maxBucketSize()`
 	- Output: Returns the maximum number of buckets
-- `bucketSize`
-	- Syntax: `exampleMap.bucketSize(x, y)`
-	- Output: Returns the number of elements in specific bucket
-- `bucket`
-	- Syntax: `exampleMap.bucket(x ,y)`
-	- Output: Returns the bucket for specific key
-
 ### Comparison
 - operator`==` 
 	- Compares the keys and values in the map
 	- Syntax: `exampleMapOne<x, y> == exampleMapTwo<x, y>`
 	- Output: Returns boolean of comparing the respective values
-- operator`==`
+- operator`!=`
 	- As of C++20, operator`!=` implicitly exists inveresely to the equals to operator
 - `eraseIf`
 	- Erases all elements satisfying specific criteria
-	- Syntax: `exampleMap.eraseIf(x, y)`
+	- Syntax: `exampleMap.eraseIf({x, y})`
