@@ -4,5 +4,3 @@ project (Hash-map)
 
 # Adds the executable called "main" that is built from the source files "main.cpp".
 add_executable (main main.cpp)
-
-

@@ -304,8 +304,8 @@ namespace UnorderedMap {
 			return index;
 		}
 		constexpr uInt bucketSize(uInt index) const noexcept { return mTable.at(index).size(); }
-		constexpr uInt maxBucketCount() const noexcept		 { return mTable.max_size(); }
-		constexpr const hashTable getTable() const noexcept  { return mTable; }
+		constexpr uInt maxBucketCount()       const noexcept { return mTable.max_size(); }
+		constexpr const hashTable getTable()  const noexcept { return mTable; }
 	};
 	
 	template<typename K, typename V>
