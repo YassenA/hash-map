@@ -6,7 +6,8 @@
 #include <iomanip>
 #include <iostream>
 
-namespace UnorderedMap {
+// UM is abbrevation for Unoreded Map
+namespace UM {
 	template<typename Key, typename Type, typename Hash = std::hash<Key>>
 	
 	class HashTable {
@@ -313,5 +314,8 @@ namespace UnorderedMap {
 		hashTableOS.printTable();
 		return os;
 	}
+
+	template<typename T>
+	void print(const T& display) { std::cout << display << "\n"; };
 }
 
