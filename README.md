@@ -1,2 +1,2 @@
 # hash-map
-An implementation of a Hash map in C++
+An implementation of a hash map in C++
