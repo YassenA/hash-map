@@ -1,5 +1,5 @@
 #include <iostream>
-#include "unordered-map/hashMap.h"
+#include "unordered-map/unorderedMap.h"
 
 int main() {
     UM::HashTable<std::string, int> testHash = { {"1-1", 54}, {"1-2", 5}, {"1-3", 65}, {"1-4", 523}, {"1-1", 54} };
