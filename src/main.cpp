@@ -1,7 +1,10 @@
 #include <iostream>
 #include "unordered-map/unorderedMap.h"
+#include "robin-hood-probing/robinHood.h"
 
-namespace HM = UM;
+/// Selects namespace of unorderd map header
+//namespace HM = UM;
+namespace HM = RH;
 
 int main() {
     HM::HashTable<std::string, int> testHash = { {"1-1", 54}, {"1-2", 5}, {"1-3", 65}, {"1-4", 523}, {"1-1", 54} };

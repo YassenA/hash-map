@@ -2,7 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\linear-robin-hood-probing"
+    "\\src\\hopscoth-mapping",
+    "\\src\\linear-robin-hood-probing",
+    "\\src\\quadratic-probing",
+    "\\src\\unordered-map"
   ],
+  "SelectedNode": "\\src\\unordered-map\\unorderedMap.h",
   "PreviewInSolutionExplorer": false
 }
