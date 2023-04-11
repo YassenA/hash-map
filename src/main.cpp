@@ -1,21 +1,23 @@
 #include <iostream>
 #include "unordered-map/unorderedMap.h"
 
+namespace HM = UM;
+
 int main() {
-    UM::HashTable<std::string, int> testHash = { {"1-1", 54}, {"1-2", 5}, {"1-3", 65}, {"1-4", 523}, {"1-1", 54} };
-    UM::HashTable<std::string, int> testHash2 = { {"2-1", 76}, {"2-2", 1} };
-    UM::HashTable<std::string, int> testHash3 = { {"3-1", 85834}, {"3-2", 12} };
-    UM::HashTable<std::string, int> testHash4 = { {"4-1", 1238} };
+    HM::HashTable<std::string, int> testHash = { {"1-1", 54}, {"1-2", 5}, {"1-3", 65}, {"1-4", 523}, {"1-1", 54} };
+    HM::HashTable<std::string, int> testHash2 = { {"2-1", 76}, {"2-2", 1} };
+    HM::HashTable<std::string, int> testHash3 = { {"3-1", 85834}, {"3-2", 12} };
+    HM::HashTable<std::string, int> testHash4 = { {"4-1", 1238} };
 
     // === Functionality ===
     // Lookup functions
-    UM::print(testHash.at("1-1"));
-    UM::print(testHash.containsKey("1-1")); 
-    UM::print(testHash.containsValue(51223)); 
-    UM::print(testHash.count({ "1-1", 54 })); 
-    UM::print(testHash["1-1"]); 
+    HM::print(testHash.at("1-1"));
+    HM::print(testHash.containsKey("1-1")); 
+    HM::print(testHash.containsValue(51223)); 
+    HM::print(testHash.count({ "1-1", 54 })); 
+    HM::print(testHash["1-1"]); 
     testHash.printContents();
-    UM::print(testHash.size()); 
+    HM::print(testHash.size()); 
 
     // Modifiers
     testHash4.clear();
@@ -31,12 +33,12 @@ int main() {
     testHash3.swap(testHash4);
 
     // Bucket interface
-    UM::print(testHash.bucketSize(2)); // std::cout << testHash.bucketSize(2) << "\n";
-    UM::print(testHash.maxBucketCount()); //std::cout << testHash.maxBucketCount() << "\n"; 
+    HM::print(testHash.bucketSize(2)); // std::cout << testHash.bucketSize(2) << "\n";
+    HM::print(testHash.maxBucketCount()); //std::cout << testHash.maxBucketCount() << "\n"; 
 
     // Other
-    UM::print(testHash.calculateLoadBalance()); //std::cout << testHash.calculateLoadBalance() << "\n";
-    UM::print(testHash.maxLoadFactor()); //std::cout << testHash.maxLoadFactor() << "\n";
+    HM::print(testHash.calculateLoadBalance()); //std::cout << testHash.calculateLoadBalance() << "\n";
+    HM::print(testHash.maxLoadFactor()); //std::cout << testHash.maxLoadFactor() << "\n";
 
     return 0;
 }
