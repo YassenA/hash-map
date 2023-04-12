@@ -1,0 +1,63 @@
+# Requirments of `unorderedMap<x, y>`
+### Capacity
+- `empty`
+	- Checks whether the container is empty
+	- Syntax: `exampleMap.empty()` 
+	- Output: Returns `true` or `false`
+- `size` 
+	- Returns the number of key, value pairs
+	- Syntax: `exampleMap.size()`
+	- Output: Returns an integer `>= 0`
+- `maxSize`
+	- Returns the maximum possible number of elements that can be stored
+	- Syntax: `exampleMap.maxSize()`
+	- Output: Returns an integer `>= 0`
+###  Modifiers
+- `clear`
+	- Clears the contents of the map
+	- Syntax: `exampleMap.clear()`
+- `insert`
+	- Inserts elements or nodes
+	- Syntax: `exampleMap.insert(x, y)`
+- `emplace`
+	- Constructs element in-place
+	- Syntax: `exampleMap.emplace(x, y)`
+- `erase`
+	- Erases keys of the map
+	- Syntax: `exampleMap.erase({x, y})`
+- `swap`
+	- Swaps the contents of a key and value
+	- Syntax: `exampleMap.swap(x, y, w, z)`
+- `merge`
+	- Splices nodes from another container
+	- Syntax: `merge(exampleMap1, exampleMap2)`
+### Lookup
+- `at`
+	- Access specified value with a specified key
+	- Syntax: `exampleMap.at(x)`
+	- Output: Return value of specified key, `y`
+- operator`[]`
+	- Access specified element
+	- Syntax: `exampleMap[x]`
+	- Output: Return value of specified key, `y`
+- `count` 
+	- Returns the number of elements matching specific key
+	- Syntax: `exampleMap.count()`
+	- Output: Return an integer `>= 0`  of elements matching specified key, `y` 
+### Bucket interface 
+- `bucketCount`
+	- Syntax: `exampleMap.bucketCount()`
+	- Output: Returns the number of buckets  
+- `maxBucketSize`
+	- Syntax: `exampleMap.maxBucketSize()`
+	- Output: Returns the maximum number of buckets
+### Comparison
+- operator`==` 
+	- Compares the keys and values in the map
+	- Syntax: `exampleMapOne<x, y> == exampleMapTwo<x, y>`
+	- Output: Returns boolean of comparing the respective values
+- operator`!=`
+	- As of C++20, operator`!=` implicitly exists inveresely to the equals to operator
+- `eraseIf`
+	- Erases all elements satisfying specific criteria
+	- Syntax: `exampleMap.eraseIf({x, y})`
